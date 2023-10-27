@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
 """Log stats"""
+
 from pymongo import MongoClient
 
 
 if __name__ == "__main__":
-    client = MongoClient('mongodb://localhost')
-    db = client["logs"]
-    var = db["nginx"]
-
-    print(f"{var.count_documents({})} logs")
-    print("Methods:")
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    db = client['logs']
+    col = db['nginx']
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
 
-    for m in methods:
-        print(f"\tmethod {m}: {var.count_documents({'method': m})}")
+    print(f"{col.count_documents({})} logs")
+    print("Methods:")
 
-    mesage = "status check"
+    for method in methods:
+        print(f"\tmethod {method}: {col.count_documents({'method': method})}")
 
-    print(f"{var.count_documents({'method': 'GET', 'path': '/status'})} {mesage}")
+    sc = "status check"
+    check = col.count_documents({'method': 'GET','path': '/status'})
+    print(f"{check} {sc}")
